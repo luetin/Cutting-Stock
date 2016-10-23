@@ -1,0 +1,2 @@
+# Cutting-Stock
+Övningsprojekt C++
