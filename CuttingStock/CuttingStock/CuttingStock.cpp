@@ -42,7 +42,7 @@ void CreateOrders(std::vector<Order>& Orders)
 	Orders.push_back(temp);
 }
 
-std::vector<int> FindUniqueLengths(const std::vector<Order>& orders)
+std::vector<int> GetUniqueLengths(const std::vector<Order>& orders)
 {
 	// Hittar unika längder i en vector
 
@@ -56,28 +56,40 @@ std::vector<int> FindUniqueLengths(const std::vector<Order>& orders)
 			result.push_back(orders[i].pipeLength);
 		}
 	}
+
+	std::sort(result.begin(), result.end());
 	return result;
 }
 
-int FindMaxPatternSize(const std::vector<int>& uniqueLengths, const int rawMaterialLength)
+int GetMaxPatternSize(const std::vector<int>& uniqueLengths, int length)
 {
 	// Beräknar hur många element en pattern max kan innehålla
 
-	// TODO: Lägg till en sortering av vectorn för att lättare kunna göra beräkningen
+	int minimumElementValue = uniqueLengths[0];
+	int remainingMaterial = length;
+	int result = 0;
 
-	int minimumElementValue = *std::min_element(uniqueLengths.begin(), uniqueLengths.end());
+
+	do
+	{
+		remainingMaterial -= minimumElementValue;
+		if (remainingMaterial > 0)
+		{
+			result++;
+		}
+	} while (remainingMaterial > 0);
 
 
-
-	// return *std::min_element(uniqueLengths.begin(), uniqueLengths.end());
+	return result;
 }
+
 
 void CreatePossiblePatterns(const std::vector<Order>& Orders, const int rawMaterialLength, std::vector<int>& Patterns)
 {
 	std::vector<Order> copyOfOrders = Orders;
 	std::vector<int> uniqueLengths;
 
-	uniqueLengths = FindUniqueLengths(copyOfOrders);
+	uniqueLengths = GetUniqueLengths(copyOfOrders);
 
 
 	for (size_t i = 0; i < uniqueLengths.size(); i++)
@@ -86,8 +98,8 @@ void CreatePossiblePatterns(const std::vector<Order>& Orders, const int rawMater
 	}
 
 
-	int test = FindMaxPatternSize(uniqueLengths, 7000);
-	std::cout << "Minsta elementet: " << test << std::endl;
+	int maxPatternSize = GetMaxPatternSize(uniqueLengths, 7000);
+	std::cout << "Minsta elementet: " << maxPatternSize << std::endl;
 
 }
 
