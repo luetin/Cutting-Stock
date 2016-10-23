@@ -78,8 +78,32 @@ int GetMaxPatternSize(const std::vector<int>& uniqueLengths, int length)
 			result++;
 		}
 	} while (remainingMaterial > 0);
+	return result;
+}
+
+int GetMinPatternSize(const std::vector<int>& uniqueLengths, int length)
+{
+	// Beräknar hur många element en pattern min kan innehålla
 
 
+	int remainingMaterial = length;
+	int result = 0;
+
+
+	// Loopa baklänges genom vectorn för att börja med det största elementet.
+	std::vector<int>::const_reverse_iterator it;
+	for (it = uniqueLengths.rbegin(); it != uniqueLengths.rend(); it++)
+	{
+		do
+		{
+			if (remainingMaterial > *it)
+			{
+				// std::cout << "Lägger till längd: " << *it << std::endl;
+				remainingMaterial -= *it;
+				result++;
+			}
+		} while (remainingMaterial > *it);
+	}
 	return result;
 }
 
@@ -98,8 +122,12 @@ void CreatePossiblePatterns(const std::vector<Order>& Orders, const int rawMater
 	}
 
 
+	// Testkod, ta bort!
 	int maxPatternSize = GetMaxPatternSize(uniqueLengths, 7000);
-	std::cout << "Minsta elementet: " << maxPatternSize << std::endl;
+	std::cout << "Max antal element: " << maxPatternSize << std::endl;
+
+	int minPatternSize = GetMinPatternSize(uniqueLengths, 7000);
+	std::cout << "Minst antal element: " << minPatternSize << std::endl;
 
 }
 
